@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aegis Live Machine Guardian</title>
+  <style>
+    :root {
+      --bg: #070b16;
+      --panel: #10182f;
+      --panel-alt: #162242;
+      --border: #26386b;
+      --text: #eef2ff;
+      --muted: #93a3c8;
+      --accent: #3b82f6;
+      --green: #22c55e;
+      --amber: #f59e0b;
+      --red: #ef4444;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+      background: var(--bg); color: var(--text); padding: 18px; line-height: 1.45;
+    }
+    .wrap { max-width: 980px; margin: 0 auto; }
+    .topbar {
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+      padding: 14px 18px; background: var(--panel); border: 1px solid var(--border);
+      border-radius: 12px; margin-bottom: 14px;
+    }
+    .pulse-row { display: flex; align-items: center; gap: 10px; }
+    .dot {
+      width: 11px; height: 11px; border-radius: 50%; background: var(--green);
+      box-shadow: 0 0 12px var(--green); animation: pulse 1.8s infinite;
+    }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+    h1 { font-size: 1.15rem; font-weight: 700; }
+    .sub { color: var(--muted); font-size: 0.8rem; font-family: ui-monospace, Menlo, monospace; }
+    .controls {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;
+    }
+    @media (max-width: 720px) { .controls { grid-template-columns: 1fr; } }
+    .box {
+      background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 14px;
+    }
+    .box h2 { font-size: 0.92rem; margin-bottom: 6px; }
+    .box p { font-size: 0.8rem; color: var(--muted); margin-bottom: 10px; }
+    .btn-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    button {
+      border: none; border-radius: 7px; padding: 8px 13px; font-weight: 600; font-size: 0.82rem;
+      cursor: pointer; color: #fff; background: var(--accent);
+    }
+    button.green { background: var(--green); color: #052e16; }
+    button.red { background: var(--red); }
+    button.amber { background: var(--amber); color: #111; }
+    button.ghost { background: var(--panel-alt); border: 1px solid var(--border); color: var(--text); }
+    .mode-pill {
+      display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 0.74rem; font-weight: 700;
+    }
+    .mode-pill.auto { background: rgba(34,197,94,0.2); color: #86efac; border: 1px solid var(--green); }
+    .mode-pill.alert { background: rgba(245,158,11,0.2); color: #fcd34d; border: 1px solid var(--amber); }
+    .incident-card {
+      background: var(--panel); border: 1px solid var(--border); border-left: 4px solid var(--red);
+      border-radius: 11px; padding: 15px; margin-bottom: 12px;
+    }
+    .incident-card.undone { border-left-color: var(--green); opacity: 0.92; }
+    .incident-card.approved { border-left-color: var(--accent); }
+    .inc-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+    .badge {
+      padding: 2px 8px; border-radius: 99px; font-size: 0.72rem; font-weight: 700;
+    }
+    .badge.CRITICAL { background: rgba(239,68,68,0.22); color: #fca5a5; }
+    .badge.HIGH { background: rgba(245,158,11,0.22); color: #fcd34d; }
+    .badge.AUTO_UNDONE, .badge.UNDONE_BY_DEV { background: rgba(34,197,94,0.22); color: #86efac; }
+    .badge.ACTIVE_ON_DISK { background: rgba(239,68,68,0.28); color: #fecaca; }
+    .badge.OWNER_APPROVED_EXCEPTION { background: rgba(59,130,246,0.25); color: #bfdbfe; }
+    pre.diff {
+      background: #050811; border: 1px solid var(--border); border-radius: 8px; padding: 10px;
+      font-size: 0.77rem; overflow-x: auto; margin: 9px 0; color: #cbd5e1;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    .diff-add { color: #fca5a5; }
+    .diff-del { color: #86efac; }
+    .empty {
+      text-align: center; padding: 36px 20px; color: var(--muted);
+      background: var(--panel); border: 1px dashed var(--border); border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <div class="pulse-row">
+      <div class="dot" id="wsDot"></div>
+      <div>
+        <h1>Aegis Live Machine Guardian</h1>
+        <div class="sub" id="watchPathLabel">Connecting to local file-watcher...</div>
+      </div>
+    </div>
+    <div style="display:flex; gap:8px; align-items:center;">
+      <span id="modeBadge" class="mode-pill alert">ALERT + 1-CLICK UNDO</span>
+      <a href="/" style="color:#93c5fd; font-size:0.82rem; text-decoration:none;">Full SOC Dashboard →</a>
+    </div>
+  </div>
+
+  <div class="controls">
+    <div class="box">
+      <h2>1. Protection Mode (Works Alongside VS Code / Cursor)</h2>
+      <p>Choose whether Aegis warns you with a 1-click Undo button, or <strong>automatically rewinds</strong> risky saves in milliseconds.</p>
+      <div class="btn-row">
+        <button class="amber" onclick="setAutoUndo(false)">Alert + 1-Click Undo Mode</button>
+        <button class="green" onclick="setAutoUndo(true)">Strict Auto-Undo Shield</button>
+      </div>
+    </div>
+
+    <div class="box">
+      <h2>2. Try a Live Developer / AI Mistake Right Now</h2>
+      <p>Writes a real risky change into <code>aegis_live_playground/app_agent.py</code> (or edit that file yourself in VS Code and press <code>Cmd+S</code>!).</p>
+      <div class="btn-row">
+        <button class="red" onclick="simulateMistake('secret')">Save Leaked API Key</button>
+        <button class="red" onclick="simulateMistake('shell')">Save `shell=True` Bug</button>
+        <button class="ghost" onclick="armGitHook()">Arm Git Pre-Commit Blocker</button>
+      </div>
+      <div id="hookStatusMsg" style="font-size:0.76rem; color:#86efac; margin-top:7px;"></div>
+    </div>
+  </div>
+
+  <div id="incidentsFeed">
+    <div class="empty">
+      <strong>Workspace Clean — Watching for Risky Saves in Real Time</strong><br/>
+      <span style="font-size:0.84rem;">Open <code>aegis_live_playground/app_agent.py</code> in your editor and save a secret or <code>shell=True</code>, or click a red test button above!</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  let incidents = [];
+  let offlineOwner = null;
+
+  function escapeHtml(s) {
+    return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function formatDiff(diff) {
+    if (!diff) return 'No diff available.';
+    return diff.split('\n').map(line => {
+      const esc = escapeHtml(line);
+      if (line.startsWith('+') && !line.startsWith('+++')) return `<span class="diff-add">${esc}</span>`;
+      if (line.startsWith('-') && !line.startsWith('---')) return `<span class="diff-del">${esc}</span>`;
+      return esc;
+    }).join('\n');
+  }
+
+  function updateModeBadge(autoUndo) {
+    const b = document.getElementById('modeBadge');
+    if (autoUndo) {
+      b.className = 'mode-pill auto';
+      b.textContent = 'STRICT AUTO-UNDO SHIELD ON';
+    } else {
+      b.className = 'mode-pill alert';
+      b.textContent = 'ALERT + 1-CLICK UNDO';
+    }
+  }
+
+  function renderFeed() {
+    const feed = document.getElementById('incidentsFeed');
+    if (!incidents.length) return;
+    feed.innerHTML = incidents.map(inc => {
+      const cardCls = (inc.status === 'AUTO_UNDONE' || inc.status === 'UNDONE_BY_DEV')
+        ? 'incident-card undone'
+        : (inc.status === 'OWNER_APPROVED_EXCEPTION' ? 'incident-card approved' : 'incident-card');
+      const f0 = inc.findings[0] || {};
+      return `
+        <div class="${cardCls}">
+          <div class="inc-head">
+            <div>
+              <span class="badge ${inc.highest_severity}">${inc.highest_severity}</span>
+              <strong style="margin-left:6px;"><code>${escapeHtml(inc.rel_path)}</code></strong>
+              <span style="color:#93a3c8; font-size:0.8rem; margin-left:6px;">(${inc.elapsed_ms} ms)</span>
+            </div>
+            <span class="badge ${inc.status}">${inc.status}</span>
+          </div>
+          <div style="font-size:0.86rem; margin-bottom:4px;">
+            <strong>${escapeHtml(f0.rule_id || '')}: ${escapeHtml(f0.title || '')}</strong>
+            ${inc.findings.length > 1 ? `<span style="color:#93a3c8;"> (+${inc.findings.length - 1} more)</span>` : ''}
+          </div>
+          <div style="font-size:0.8rem; color:#93a3c8;">${escapeHtml(f0.why_weak || '')}</div>
+          <pre class="diff">${formatDiff(inc.unified_diff)}</pre>
+          ${inc.status === 'ACTIVE_ON_DISK' ? `
+            <div class="btn-row">
+              <button class="green" onclick="undoIncident('${inc.incident_id}')">⏪ Undo Dangerous File Edit Now</button>
+              <button class="ghost" onclick="ownerApproveIncident('${inc.incident_id}', '${escapeHtml(inc.rel_path)}')">🔑 Sign Owner Ed25519 Exception</button>
+            </div>
+          ` : `<div style="font-size:0.8rem; color:#86efac;">
+            ${inc.status === 'AUTO_UNDONE'
+              ? '⚡ Automatically reverted back to clean shadow snapshot on disk!'
+              : (inc.status === 'UNDONE_BY_DEV'
+                ? '✅ Clean shadow snapshot restored to disk!'
+                : `🔑 Approved via Ed25519 signature by ${escapeHtml(inc.approved_by_owner || 'owner')}`)}
+          </div>`}
+        </div>
+      `;
+    }).join('');
+  }
+
+  async function setAutoUndo(autoUndo) {
+    const res = await fetch('/v1/guardian/mode', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({auto_undo: autoUndo})
+    });
+    const data = await res.json();
+    updateModeBadge(data.auto_undo);
+  }
+
+  async function undoIncident(id) {
+    const res = await fetch(`/v1/guardian/incidents/${id}/undo`, {method: 'POST'});
+    const updated = await res.json();
+    incidents = incidents.map(i => i.incident_id === id ? updated : i);
+    renderFeed();
+  }
+
+  async function ownerApproveIncident(id, relPath) {
+    if (!offlineOwner) {
+      const r = await fetch('/v1/owners/enroll', {
+        method: 'POST', headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({owner_id: 'owner_lead_dev', display_name: 'Lead Security Owner', enable_totp: true})
+      });
+      offlineOwner = await r.json();
+    }
+    const signRes = await fetch('/v1/owners/sign-helper', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        private_key_pem: offlineOwner.private_key_pem,
+        owner_id: offlineOwner.owner_id,
+        operation: 'GUARDIAN_FILE_EXCEPTION',
+        target_resource: id,
+        canonical_params: {incident_id: id, rel_path: relPath},
+        totp_secret_b32: offlineOwner.totp_secret_b32
+      })
+    });
+    const proof = await signRes.json();
+    const res = await fetch(`/v1/guardian/incidents/${id}/owner-approve`, {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(proof)
+    });
+    const updated = await res.json();
+    if (!res.ok) { alert(updated.detail || 'Owner verification failed'); return; }
+    incidents = incidents.map(i => i.incident_id === id ? updated : i);
+    renderFeed();
+  }
+
+  async function simulateMistake(kind) {
+    await fetch(`/v1/guardian/simulate-mistake?kind=${kind}`, {method: 'POST'});
+  }
+
+  async function armGitHook() {
+    const res = await fetch('/v1/guardian/install-git-hook', {method: 'POST'});
+    const data = await res.json();
+    document.getElementById('hookStatusMsg').textContent = data.installed
+      ? `✅ Armed Git Pre-Commit Blocker at ${data.hook_path}`
+      : (data.detail || 'Initialized Git hook');
+  }
+
+  function connectGuardianWs() {
+    const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const ws = new WebSocket(`${proto}//${location.host}/ws/guardian`);
+    ws.onopen = () => { document.getElementById('wsDot').style.background = '#22c55e'; };
+    ws.onmessage = (ev) => {
+      const msg = JSON.parse(ev.data);
+      if (msg.type === 'INIT_STATE') {
+        document.getElementById('watchPathLabel').textContent = `Watching: ${msg.workspace_root}`;
+        updateModeBadge(msg.auto_undo);
+        incidents = msg.incidents || [];
+        renderFeed();
+      } else if (msg.type === 'NEW_INCIDENT') {
+        incidents = [msg.incident, ...incidents.filter(i => i.incident_id !== msg.incident.incident_id)];
+        renderFeed();
+      } else if (msg.type === 'INCIDENT_UPDATED') {
+        incidents = incidents.map(i => i.incident_id === msg.incident.incident_id ? msg.incident : i);
+        renderFeed();
+      }
+    };
+    ws.onclose = () => {
+      document.getElementById('wsDot').style.background = '#ef4444';
+      setTimeout(connectGuardianWs, 1500);
+    };
+  }
+
+  connectGuardianWs();
+</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "scoped-workspace-fs": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem@0.6.2", "./sandbox_data"]
+    },
+    "verified-internal-mcp": {
+      "url": "https://mcp-gateway.corp.internal/sse"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "host-filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/"]
+    },
+    "third-party-tools": {
+      "url": "http://mcp.partner-unencrypted.example.com/sse"
+    }
+  }
+}

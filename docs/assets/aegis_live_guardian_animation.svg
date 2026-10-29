@@ -1,0 +1,185 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 440" width="100%" height="100%">
+  <defs>
+    <style>
+      @keyframes pulseDot {
+        0%, 100% { fill: #22c55e; filter: drop-shadow(0 0 6px #22c55e); opacity: 1; }
+        50% { fill: #166534; filter: none; opacity: 0.4; }
+      }
+      @keyframes alertTrigger {
+        0%, 15% { opacity: 0; transform: translateY(10px); }
+        22%, 65% { opacity: 1; transform: translateY(0); }
+        75%, 100% { opacity: 0; transform: translateY(-10px); }
+      }
+      @keyframes codeTypewriter {
+        0%, 12% { opacity: 0; }
+        18%, 68% { opacity: 1; }
+        74%, 100% { opacity: 0; }
+      }
+      @keyframes cleanCodeState {
+        0%, 14% { opacity: 1; }
+        20%, 68% { opacity: 0; }
+        74%, 100% { opacity: 1; }
+      }
+      @keyframes undoActionFlash {
+        0%, 60% { opacity: 0; transform: scale(0.95); }
+        64%, 72% { opacity: 1; transform: scale(1); }
+        76%, 100% { opacity: 0; }
+      }
+      @keyframes timerProgress {
+        0% { stroke-dashoffset: 120; }
+        25% { stroke-dashoffset: 0; }
+        100% { stroke-dashoffset: 0; }
+      }
+      .font-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+      .font-sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    </style>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#070b16"/>
+      <stop offset="100%" stop-color="#0d1424"/>
+    </linearGradient>
+    <linearGradient id="panelGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#111a33"/>
+      <stop offset="100%" stop-color="#0a1020"/>
+    </linearGradient>
+    <linearGradient id="btnGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#22c55e"/>
+      <stop offset="100%" stop-color="#16a34a"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="920" height="440" rx="14" fill="url(#bgGrad)" stroke="#1e293b" stroke-width="2"/>
+
+  <!-- Top App Window Header -->
+  <rect width="920" height="42" rx="14" fill="#0f172a"/>
+  <rect y="32" width="920" height="10" fill="#0f172a"/>
+  <circle cx="24" cy="21" r="5.5" fill="#ef4444"/>
+  <circle cx="42" cy="21" r="5.5" fill="#f59e0b"/>
+  <circle cx="60" cy="21" r="5.5" fill="#22c55e"/>
+
+  <text x="460" y="26" text-anchor="middle" fill="#94a3b8" font-size="12" font-weight="600" class="font-sans">
+    Aegis Live Machine Guardian — Real-Time Developer &amp; Agent Protection (VS Code Split-Screen)
+  </text>
+
+  <!-- LEFT PANE: Editor (VS Code) -->
+  <g transform="translate(18, 54)">
+    <rect width="430" height="368" rx="8" fill="url(#panelGrad)" stroke="#1e293b" stroke-width="1.5"/>
+    <!-- Editor Tab -->
+    <rect width="430" height="32" rx="8" fill="#1e293b" opacity="0.6"/>
+    <rect y="24" width="430" height="8" fill="#1e293b" opacity="0.6"/>
+    <rect x="12" y="6" width="140" height="26" rx="4" fill="#0f172a"/>
+    <circle cx="24" cy="19" r="3.5" fill="#3b82f6"/>
+    <text x="34" y="23" fill="#cbd5e1" font-size="11" font-weight="500" class="font-mono">app_agent.py</text>
+    <text x="390" y="22" fill="#64748b" font-size="10" class="font-sans">Cmd+S</text>
+
+    <!-- Line Numbers -->
+    <g fill="#475569" font-size="11" class="font-mono" text-anchor="end">
+      <text x="30" y="65">1</text>
+      <text x="30" y="85">2</text>
+      <text x="30" y="105">3</text>
+      <text x="30" y="125">4</text>
+      <text x="30" y="145">5</text>
+      <text x="30" y="165">6</text>
+      <text x="30" y="185">7</text>
+      <text x="30" y="205">8</text>
+      <text x="30" y="225">9</text>
+    </g>
+
+    <!-- Baseline Clean Code -->
+    <g class="font-mono" font-size="11.5">
+      <text x="48" y="65" fill="#60a5fa">from</text>
+      <text x="82" y="65" fill="#e2e8f0">fastapi</text>
+      <text x="134" y="65" fill="#60a5fa">import</text>
+      <text x="180" y="65" fill="#e2e8f0">FastAPI</text>
+
+      <text x="48" y="105" fill="#60a5fa">def</text>
+      <text x="75" y="105" fill="#facc15">handle_inquiry</text>
+      <text x="175" y="105" fill="#e2e8f0">(order_id):</text>
+
+      <g style="animation: cleanCodeState 8s infinite ease-in-out;">
+        <text x="68" y="125" fill="#64748b"># Clean shadow baseline</text>
+        <text x="68" y="145" fill="#f43f5e">return</text>
+        <text x="114" y="145" fill="#38bdf8">{"order"</text>
+        <text x="170" y="145" fill="#e2e8f0">: order_id}</text>
+      </g>
+
+      <!-- Risky Code Saved (Typing & Red Highlight) -->
+      <g style="animation: codeTypewriter 8s infinite ease-in-out;">
+        <rect x="42" y="113" width="374" height="60" rx="4" fill="#ef4444" fill-opacity="0.15" stroke="#ef4444" stroke-dasharray="3,3"/>
+        <text x="48" y="129" fill="#ef4444" font-weight="700">+ OPENAI_API_KEY = "sk-proj-9988..."</text>
+        <text x="48" y="149" fill="#ef4444" font-weight="700">+ subprocess.run(cmd, shell=True)</text>
+        <text x="48" y="169" fill="#fca5a5" font-size="10">▲ [BLOCKED BY AEGIS LIVE GUARDIAN]</text>
+      </g>
+    </g>
+
+    <!-- Bottom Status Bar -->
+    <rect y="344" width="430" height="24" fill="#0f172a" rx="4"/>
+    <text x="12" y="360" fill="#38bdf8" font-size="10" class="font-sans">● Python 3.10 (.venv)</text>
+    <text x="350" y="360" fill="#64748b" font-size="10" class="font-sans">UTF-8 • Ln 6, Col 1</text>
+  </g>
+
+  <!-- RIGHT PANE: Aegis Live Guardian Companion UI -->
+  <g transform="translate(472, 54)">
+    <rect width="430" height="368" rx="8" fill="url(#panelGrad)" stroke="#1e293b" stroke-width="1.5"/>
+
+    <!-- UI Top Header -->
+    <rect width="430" height="44" rx="8" fill="#1e293b" opacity="0.4"/>
+    <circle cx="20" cy="22" r="5" style="animation: pulseDot 2s infinite ease-in-out;"/>
+    <text x="34" y="21" fill="#f8fafc" font-size="13" font-weight="700" class="font-sans">Aegis Live Machine Guardian</text>
+    <text x="34" y="35" fill="#94a3b8" font-size="9.5" class="font-mono">ws://127.0.0.1:8000/ws/guardian (Active)</text>
+
+    <!-- Shield Mode Badge -->
+    <rect x="286" y="12" width="134" height="22" rx="11" fill="#22c55e" fill-opacity="0.16" stroke="#22c55e"/>
+    <text x="353" y="27" text-anchor="middle" fill="#86efac" font-size="9" font-weight="700" class="font-sans">AUTO-UNDO SHIELD: ON</text>
+
+    <!-- Incident Card (Animated popup) -->
+    <g style="animation: alertTrigger 8s infinite ease-in-out;">
+      <rect x="12" y="58" width="406" height="236" rx="8" fill="#0f172a" stroke="#ef4444" stroke-width="1.5"/>
+
+      <!-- Incident Header -->
+      <rect x="22" y="70" width="70" height="18" rx="4" fill="#ef4444" fill-opacity="0.25"/>
+      <text x="57" y="83" text-anchor="middle" fill="#fca5a5" font-size="9.5" font-weight="800" class="font-sans">CRITICAL</text>
+      <text x="100" y="83" fill="#f8fafc" font-size="11.5" font-weight="700" class="font-mono">app_agent.py</text>
+      <text x="350" y="83" fill="#94a3b8" font-size="9.5" class="font-sans">in 14.2 ms</text>
+
+      <text x="22" y="106" fill="#fca5a5" font-size="11" font-weight="700" class="font-sans">AEGIS-SEC-001: Exposed Plaintext API Key</text>
+      <text x="22" y="122" fill="#94a3b8" font-size="9.5" class="font-sans">High blast-radius credential detected on disk during file save.</text>
+
+      <!-- Colorized Unified Diff Box -->
+      <rect x="22" y="132" width="386" height="84" rx="5" fill="#050811" stroke="#1e293b"/>
+      <text x="32" y="150" fill="#64748b" font-size="9" class="font-mono">--- clean/app_agent.py (Shadow Snapshot)</text>
+      <text x="32" y="166" fill="#64748b" font-size="9" class="font-mono">+++ risky/app_agent.py (Saved File)</text>
+      <text x="32" y="184" fill="#ef4444" font-size="9.5" font-weight="700" class="font-mono">+ OPENAI_API_KEY = "sk-proj-DEMO_SECRET..."</text>
+      <text x="32" y="200" fill="#ef4444" font-size="9.5" font-weight="700" class="font-mono">+ subprocess.run(cmd, shell=True)</text>
+
+      <!-- 1-Click Undo Button (Interactive Highlight) -->
+      <rect x="22" y="226" width="220" height="28" rx="6" fill="url(#btnGrad)"/>
+      <text x="132" y="244" text-anchor="middle" fill="#052e16" font-size="10.5" font-weight="800" class="font-sans">⏪ Undo Dangerous Edit (1-Click)</text>
+
+      <rect x="250" y="226" width="158" height="28" rx="6" fill="#1e293b" stroke="#334155"/>
+      <text x="329" y="244" text-anchor="middle" fill="#cbd5e1" font-size="10" font-weight="600" class="font-sans">🔑 Sign Ed25519 Exception</text>
+    </g>
+
+    <!-- Restored Success Badge Overlay (Flashes after undo) -->
+    <g style="animation: undoActionFlash 8s infinite ease-in-out;">
+      <rect x="50" y="130" width="330" height="90" rx="8" fill="#052e16" stroke="#22c55e" stroke-width="2"/>
+      <circle cx="80" cy="175" r="14" fill="#22c55e"/>
+      <text x="80" y="180" text-anchor="middle" fill="#052e16" font-size="14" font-weight="900">✓</text>
+      <text x="108" y="167" fill="#86efac" font-size="12" font-weight="700" class="font-sans">Clean Baseline Restored on Disk!</text>
+      <text x="108" y="185" fill="#bbf7d0" font-size="9.5" class="font-sans">Reverted in 11.8ms • Zero human work destroyed</text>
+    </g>
+
+    <!-- Bottom Guardian Stats -->
+    <rect y="310" width="430" height="58" rx="8" fill="#0f172a"/>
+    <g class="font-sans" font-size="10.5">
+      <text x="24" y="332" fill="#94a3b8">Active Baselines:</text>
+      <text x="110" y="332" fill="#f8fafc" font-weight="700" class="font-mono">29 files</text>
+
+      <text x="175" y="332" fill="#94a3b8">Architecture Score:</text>
+      <text x="278" y="332" fill="#22c55e" font-weight="700" class="font-mono">100 / 100</text>
+
+      <text x="24" y="352" fill="#94a3b8">Git Pre-Commit Hook:</text>
+      <text x="138" y="352" fill="#38bdf8" font-weight="700" class="font-mono">ARMED (.git/hooks/pre-commit)</text>
+    </g>
+  </g>
+</svg>

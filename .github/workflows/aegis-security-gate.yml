@@ -1,0 +1,41 @@
+name: AegisUndo Agentic Security Gate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  aegis-architecture-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install AegisUndo & Test Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Run Unit & Integration Security Suite
+        run: pytest -v
+
+      - name: Audit Reference Hardened Agent Architecture (Enforce >= 90/100)
+        run: |
+          aegis scan examples/hardened_enterprise_agent --format sarif --output aegis-audit.sarif --fail-under 90
+
+      - name: Upload SARIF Findings to GitHub Security Tab
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: aegis-audit.sarif

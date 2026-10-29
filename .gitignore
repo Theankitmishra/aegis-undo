@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+*.db
+*.db-shm
+*.db-wal
+aegis_state/
+aegis_live_playground/
+.DS_Store
