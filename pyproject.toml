@@ -8,9 +8,9 @@ version = "2.0.0"
 description = "Zero-Trust Owner-Verified Agentic Security Platform with Adversarial Fine-Tuning, Encrypted Vault, Taint Isolation & Surgical Undo"
 readme = "README.md"
 requires-python = ">=3.10"
-license = { text = "Apache-2.0" }
+license = { text = "PolyForm-Noncommercial-1.0.0 / Commercial Dual-License" }
 authors = [
-    { name = "Aegis Security Engineering" }
+    { name = "Ankit Kumar Mishra", email = "theankitmishraa@gmail.com" }
 ]
 dependencies = [
     "fastapi>=0.110.0",

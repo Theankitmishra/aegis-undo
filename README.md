@@ -307,3 +307,15 @@ This project has visual features designed to stand out on LinkedIn, Twitter/X, a
 > * 🧠 **Adversarial Fine-Tuning Pipeline**: Auto-exports OpenAI SFT, HuggingFace TRL LoRA DPO, and Vertex Gemini datasets.*
 >
 > *Full open-source code & test suite on GitHub! Feedback welcome!"*
+
+---
+
+## 10. License & Commercial Inquiries
+
+AegisUndo is distributed under a **Source-Available Dual-Licensing Model**:
+
+* **Non-Commercial & Evaluation**: Free for personal learning, academic research, and non-commercial security audits under the [PolyForm Noncommercial License 1.0.0](LICENSE.md).
+* **Commercial, Enterprise & Production**: Commercial deployment within companies, developer workstations (`aegis watch`), SaaS integrations, or for-profit usage strictly requires a commercial license agreement and payment of royalties.
+
+For enterprise licensing, commercial pilots, or royalty inquiries:  
+📩 **Contact:** Ankit Kumar Mishra — [`theankitmishraa@gmail.com`](mailto:theankitmishraa@gmail.com)
