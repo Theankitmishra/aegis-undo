@@ -10,8 +10,6 @@
 
 Welcome to **AegisUndo**! This guide explains the entire project in plain English so you can easily understand **why it exists**, **how every piece works**, **what each file does**, and **how to run it**.
 
-> 📖 **Deep-Dive Technical Guide**: For an exhaustive, function-by-function manual explaining **why each line was written** and **how to explain every subsystem in an interview from scratch**, see [`CODE_EXPLAINED.md`](CODE_EXPLAINED.md).
-
 ---
 
 ## 1. What Problem Does This Project Solve?
