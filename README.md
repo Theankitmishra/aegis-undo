@@ -197,13 +197,20 @@ When developers or autonomous AI coding assistants (like Cursor, Claude Desktop,
 
 ---
 
-## 8. Copy-Paste Commands to Try Everything Yourself
+## 8. Quickstart & Commands
 
-Open your terminal inside `/Users/ankitkumarmishra/Downloads/threat` and run:
-
-### Step 1: Turn on the Python environment
+### Step 1: Clone and Set Up Environment
 ```bash
+# Clone the repository
+git clone https://github.com/Theankitmishra/aegis-undo.git
+cd aegis-undo
+
+# Create and activate Python virtual environment
+python3 -m venv .venv
 source .venv/bin/activate
+
+# Install in editable mode
+pip install -e .
 ```
 
 ### Step 2: Launch the Live Machine Guardian (Works Alongside VS Code)
@@ -268,49 +275,7 @@ pytest -v
 
 ---
 
-## 9. How to Record a 45-Second Viral LinkedIn / GitHub Portfolio Demo Video
-
-This project has visual features designed to stand out on LinkedIn, Twitter/X, and GitHub:
-
-### Setup (Split-Screen on your Mac):
-1. **Left Half of Screen:** VS Code or Cursor open with `aegis_live_playground/app_agent.py`.
-2. **Right Half of Screen:** Chrome or Safari open to `http://127.0.0.1:8000/guardian` (Live Machine Guardian UI).
-3. **Terminal:** Run `aegis watch ./aegis_live_playground --port 8000`.
-
-### The 45-Second Demo Walkthrough:
-1. **0:00 - 0:12 (Real-Time Alert):**
-   - In VS Code, paste a leaked API key: `OPENAI_API_KEY = "sk-proj-DEMO_SECRET_KEY..."`.
-   - Press `Cmd + S`.
-   - **Show the macOS Notification Center banner slide out top-right** + **the Live Guardian Companion UI immediately display the red card and diff!**
-2. **0:13 - 0:22 (1-Click Undo):**
-   - Click **"⏪ Undo Dangerous File Edit Now"** on the Companion UI.
-   - Point to VS Code: show that the text was restored back to the clean version on disk without touching the keyboard!
-3. **0:23 - 0:34 (Strict Auto-Undo Shield):**
-   - On the UI, click **"Strict Auto-Undo Shield"**.
-   - In VS Code, paste `import subprocess; subprocess.run(cmd, shell=True)`.
-   - Press `Cmd + S`.
-   - Show that within **12 milliseconds**, Aegis automatically erased the dangerous change from disk and notified you: *"Aegis Auto-Undid Dangerous Save!"*
-4. **0:35 - 0:45 (Owner Cryptographic Signature Exception):**
-   - If an engineer legitimately needs an exception, click **"🔑 Sign Owner Ed25519 Exception"**.
-   - Show how the offline asymmetric signature verifies the change and turns the card blue!
-
-### Suggested LinkedIn Post Caption:
-> *"What happens when an AI coding assistant or developer accidentally saves a hardcoded API key or `shell=True` on their local machine?*
->
-> *I built **AegisUndo** — a zero-trust agentic security platform & live machine guardian. It watches your workspace in real time using Rust-backed kernel file hooks, computes millisecond unified diffs, fires native macOS alerts, and features an atomic **Strict Auto-Undo Shield** that reverts dangerous saves on disk in under 15ms.*
->
-> *Features:*
-> * 🛡️ **Live Machine Guardian**: Real-time save inspection, native desktop alerts & 1-click shadow rollback.*
-> * 🔐 **Zero-Trust Owner Verification**: Asymmetric Ed25519 offline signing + RFC 6238 TOTP + Anti-Replay nonces.*
-> * 🪤 **Canary Honeytoken Tripwires**: Triggers instant workspace lockdown if unauthorized exfiltration occurs.*
-> * 🎯 **Surgical Undo Engine**: Row-level database rollbacks preserving concurrent human transactions.*
-> * 🧠 **Adversarial Fine-Tuning Pipeline**: Auto-exports OpenAI SFT, HuggingFace TRL LoRA DPO, and Vertex Gemini datasets.*
->
-> *Full open-source code & test suite on GitHub! Feedback welcome!"*
-
----
-
-## 10. License & Commercial Inquiries
+## 9. License & Commercial Inquiries
 
 AegisUndo is distributed under a **Source-Available Dual-Licensing Model**:
 
